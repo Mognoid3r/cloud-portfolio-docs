@@ -1,21 +1,19 @@
-# AWS Cloud Stack (Documentation-Only)
+# AWS Cloud Stack — Documentation Only
 
-**What this is:** A high-level, sanitized overview of a personal AWS implementation.  
-**What this is NOT:** No code, no identifiers, no secrets, and no proprietary business details.
+> This repository is a high-level, sanitized overview of an AWS implementation I built.
+> It intentionally contains **no code, no identifiers, and no secrets**.
 
 ## Architecture (sanitized)
-CloudFront (edge, TLS via ACM) → S3 origins and Elastic Beanstalk app  
-IAM (users/roles/policies for least privilege), Lambda (event-driven tasks), CodePipeline (GitHub → Beanstalk)
+- CloudFront at the edge (TLS via ACM) in front of S3 (static assets) and Elastic Beanstalk (application).
+- IAM (users/roles/policies) for least-privilege access across services.
+- Lambda for event-driven operational tasks.
+- CodePipeline for CI/CD from GitHub to Elastic Beanstalk.
+- CloudFront access logs delivered to S3.
 
-```mermaid
-graph LR
-  A[Users] -->|HTTPS (ACM)|CF[CloudFront]
-  CF -->|Origin|S3A[S3 - Static Assets]
-  CF -->|Origin|EB[Elastic Beanstalk - App]
-  subgraph AWS_Account
-    IAM[IAM: users/roles/policies]
-    L[Lambda: automation/tasks]
-    CP[CodePipeline: GitHub to Build/Deploy]
-    LOGS[S3 - Access Logs]
-  end
-  CF --> LOGS
+## Operations & Runbooks (samples)
+- Investigate traffic spikes or 5xx errors using CloudFront access logs.
+- Perform periodic access reviews of IAM roles/policies and adjust scope as needed.
+- Safe deployment rollback via Elastic Beanstalk when required.
+
+## Confidentiality
+This repo is **documentation-only**. All names, IDs, code, and environment details are intentionally omitted to avoid exposing sensitive or proprietary information.
